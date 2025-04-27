@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Vitae</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <style>
+        body {
+            background-color: #001f3f; /* Navy */
+            color: #ffffff; 
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+        }
+        header, footer {
+            background-color: #001a33; /* Dark Blue */
+            padding: 10px 0;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        nav {
+            margin: 10px 0;
+        }
+        nav a {
+            color: #00bfff; /* Light Blue */
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1em;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .section {
+            background-color: #003366; /* Slightly lighter dark blue */
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        h2 {
+            border-bottom: 2px solid #00bfff;
+            padding-bottom: 10px;
+        }
+        .todo-list {
+            margin-top: 20px;
+        }
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #00bfff;
+        }
+        .todo-item.completed {
+            text-decoration: line-through;
+            color: #aaaaaa;
+        }
+        .todo-input {
+            display: flex;
+            margin-top: 10px;
+        }
+        .todo-input input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+        .todo-input button {
+            padding: 10px;
+            background-color: #00bfff;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        .todo-input button:hover {
+            background-color: #0099cc;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>PORTOFOLIO</h1>
+    <nav>
+        <a href="#about">Tentang Saya</a>
+        <a href="#hobbies">Hobi</a>
+        <a href="#contact">Kontak</a>
+        <a href="#media">Media</a>
+        <a href="#feedback">Feedback</a>
+        <a href="#guestbook">Buku Tamu</a>
+    </nav>
+</header>
+
+<main class="grid-container">
+    <section id="about" class="section">
+        <img src="profile abdi.jpg" alt="Foto Profil Abdi" width="150" style="border-radius: 50%; border: 3px solid #00bfff;">
+        <h2>Tentang Saya</h2>
+        <p>Saya seorang mahasiswa aktif di UISI, memiliki kemampuan leadership yang baik, mudah bergaul, cepat beradaptasi, dan suka belajar hal baru.</p>
+    </section>
+
+    <section id="hobbies" class="section">
+        <h2>Hobi</h2>
+        <ul>
+            <li>Kuliner</li>
+            <li>Traveling</li>
+            <li>Bernyanyi dan bermain alat musik</li>
+        </ul>
+    </section>
+
+    <section id="contact" class="section">
+        <h2>Kontak</h2>
+        <p>Email: <a href="mailto:abdi.nurhaqqin23@student.uisi.ac.id" style="color: #00bfff;">abdi.nurhaqqin23@student.uisi.ac.id</a></p>
+        <p>Telepon: 0856-0410-7616</p>
+        <p>Alamat: Tambakboyo Rt.004/Rw.001, Kecamatan Tikung, Kabupaten Lamongan</p>
+    </section>
+
+    <section id="media" class="section">
+        <h2>Media</h2>
+        <h3>Video</h3>
+        <video controls style="width: 100%; max-width: 600px;">
+            <source src="Gelora Asmara.mp4" type="video/mp4"> 
+            Browser Anda tidak mendukung pemutar video.
+        </video>
+        <h3>Lagu</h3>
+        <audio controls>
+            <source src="Pasti bisa.mp3" type="audio/mp3">
+            Browser Anda tidak mendukung pemutar audio.
+        </audio>
+    </section>
+
+    <section id="gallery" class="photo-gallery">
+        <h2>Galeri Foto Namira</h2>
+        <div class="gallery-grid">
+            <img src="namira 1.jpg" alt="Gambar 1 Namira" width="300">
+            <img src="namira 2.jpg" alt="Gambar 2 Namira" width="300">
+            <img src="namira 3.jpg" alt="Gambar 3 Namira" width="300">
+            <img src="namira 4.jpg" alt="Gambar 4 Namira" width="300">
+        </div>
+    </section>
+
+    <section id="guestbook" class="section">
+        <h2>Buku Tamu</h2>
+        <div class="todo-list" id="todo-list"></div>
+        <div class="todo-input">
+            <input type="text" id="todo-input" placeholder="Tulis pesan Anda...">
+            <button onclick="addItem()">Tambah</button>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>© 2025 Portofolio Abdi</p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', loadItems);
+
+    function loadItems() {
+        const items = JSON.parse(localStorage.getItem('guestbookItems')) || [];
+        items.forEach(item => addToList(item.text, item.completed));
+    }
+
+    function addItem() {
+        const input = document.getElementById('todo-input');
+        if (input.value) {
+            addToList(input.value, false);
+            saveItem(input.value, false);
+            input.value = '';
+        }
+    }
+
+    function addToList(text, completed) {
+        const list = document.getElementById('todo-list');
+        const item = document.createElement('div');
+        item.className = `todo-item ${completed ? 'completed' : ''}`;
+        
+        item.innerHTML = `
+            <span>${text}</span>
+            <div>
+                <button onclick="toggleComplete(this)">✔️</button>
+                <button onclick="removeItem(this)">🗑️</button>
+            </div>
+        `;
+        list.appendChild(item);
+    }
+
+    function toggleComplete(button) {
+        const item = button.parentElement.parentElement;
+        item.classList.toggle('completed');
+        updateLocalStorage();
+    }
+
+    function removeItem(button) {
+        const item = button.parentElement.parentElement;
+        item.remove();
+        updateLocalStorage();
+    }
+
+    function saveItem(text, completed) {
+        const items = JSON.parse(localStorage.getItem('guestbookItems')) || [];
+        items.push({ text, completed });
+        localStorage.setItem('guestbookItems', JSON.stringify(items));
+    }
+
+    function updateLocalStorage() {
+        const items = [];
+        const list = document.getElementById('todo-list').children;
+        for (let item of list) {
+            items.push({
+                text: item.firstChild.textContent,
+                completed: item.classList.contains('completed')
+            });
+        }
+        localStorage.setItem('guestbookItems', JSON.stringify(items));
+    }
+</script>
+
+</body>
+</html>
